@@ -29,19 +29,19 @@ public class BufferPool {
 
     }
 
-    public void GET() {
+    public void GET(int recordNumber) {
 
     }
 
-    public void SET() {
+    public void SET(int recordNumber, String content) {
 
     }
 
-    public void PIN() {
+    public void PIN(int blockId) {
 
     }
 
-    public void UNPIN() {
+    public void UNPIN(int blockId) {
 
     }
 }
