@@ -1,9 +1,16 @@
 public class Frame {
     //Holds one file (one disk block).
-    private byte [] blockContentArr = new byte[4000];
+    private byte[] blockContentArr;
     private boolean dirty;
     private boolean pinned;
     private int blockId;
+
+    public Frame(int blockId) {
+        this.dirty = false;
+        this.pinned = false;
+        this.blockId = blockId;
+        this.blockContentArr = new byte[4000];
+    }
 
     public byte[] getBlockContentArr() {
         return blockContentArr;
