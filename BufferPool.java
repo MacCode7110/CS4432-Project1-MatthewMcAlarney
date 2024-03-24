@@ -1,6 +1,5 @@
 public class BufferPool {
     private Frame[] buffers;
-
     public BufferPool(int size) {
         this.buffers = new Frame[size];
         for (int i = 0; i < this.buffers.length; i++) {
@@ -27,6 +26,22 @@ public class BufferPool {
     }
 
     public void selectAndEvictFrame() {
+
+    }
+
+    public void GET() {
+
+    }
+
+    public void SET() {
+
+    }
+
+    public void PIN() {
+
+    }
+
+    public void UNPIN() {
 
     }
 }
