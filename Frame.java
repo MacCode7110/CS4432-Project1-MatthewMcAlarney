@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 public class Frame {
     //Holds one file (one disk block).
     private byte[] blockContentArr;
@@ -45,10 +47,26 @@ public class Frame {
     }
 
     public String getRecord(int recordNumber) {
-        return "";
+        for (int i = 0; i < this.blockContentArr.length; i++) {
+            if (i == (recordNumber - 1) * 40) {
+                return new String(Arrays.copyOfRange(this.blockContentArr, i, i + 40));
+            }
+        }
+        return null;
     }
 
     public void updateRecord(int recordNumber, String newContent) {
-        setDirty(true);
+        int recordIndex = (recordNumber - 1) * 40;
+        byte[] contentToByteArr = newContent.getBytes();
+
+        if (newContent.equals(new String(Arrays.copyOfRange(this.blockContentArr, recordIndex, recordIndex + 40)))) {
+            setDirty(false);
+        } else {
+            setDirty(true);
+        }
+
+        for (int i = recordIndex; i < recordIndex + 40; i++) {
+            this.blockContentArr[i] = contentToByteArr[i - ((recordNumber - 1) * 40)];
+        }
     }
 }

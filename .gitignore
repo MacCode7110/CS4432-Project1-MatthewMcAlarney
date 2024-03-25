@@ -1,2 +1,5 @@
 .idea
 out
+Application.class
+BufferPool.class
+Frame.class
