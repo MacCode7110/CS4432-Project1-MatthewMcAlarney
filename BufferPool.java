@@ -1,10 +1,36 @@
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 public class BufferPool {
     private Frame[] buffers;
-    public BufferPool(int size) {
+    private int indexOfLastEvictedFrame;
+    public void initialize(int size) {
         this.buffers = new Frame[size];
         for (int i = 0; i < this.buffers.length; i++) {
             this.buffers[i] = new Frame(-1);
         }
+        this.indexOfLastEvictedFrame = -1;
+    }
+
+    public String obtainFilePath(int blockId) {
+        if (blockId == 1) {
+            return "Project1/F1.txt";
+        } else if (blockId == 2) {
+            return "Project1/F2.txt";
+        } else if (blockId == 3) {
+            return "Project1/F3.txt";
+        } else if (blockId == 4) {
+            return "Project1/F4.txt";
+        } else if (blockId == 5) {
+            return "Project1/F5.txt";
+        } else if (blockId == 6) {
+            return "Project1/F6.txt";
+        } else if (blockId == 7) {
+            return "Project1/F7.txt";
+        }
+        return null;
     }
     public int blockAvailableInPool(int blockId) {
         for (int i = 0; i < buffers.length; i++) {
@@ -23,6 +49,14 @@ public class BufferPool {
         return null;
     }
 
+    public int getIndexOfLastEvictedFrame() {
+        return indexOfLastEvictedFrame;
+    }
+
+    public void setIndexOfLastEvictedFrame(int indexOfLastEvictedFrame) {
+        this.indexOfLastEvictedFrame = indexOfLastEvictedFrame;
+    }
+
     public int searchForEmptyFrame() {
         for (int i = 0; i < this.buffers.length; i++) {
             if (this.buffers[i].getBlockId() == -1) {
@@ -32,15 +66,35 @@ public class BufferPool {
         return -1;
     }
 
-    public void readBlockFromDisk(int blockId) {
+    public void readBlockFromDisk(int blockId) throws IOException {
         int firstEmptyFrameIndex = searchForEmptyFrame();
+        String filePath = "";
+        Path path;
+        byte[] block;
+
         if (firstEmptyFrameIndex != -1) {
-            //Need to read block from disk
+            filePath = obtainFilePath(blockId);
+            path = Paths.get(filePath);
+            block = Files.readAllBytes(path);
+            this.buffers[firstEmptyFrameIndex].setBlockContentArr(block);
         }
     }
 
-    public void selectAndEvictFrame() {
+    public void evictFrame(int frameIndex) throws IOException {
+        String filePath = "";
+        Path path;
 
+        if(this.buffers[frameIndex].isDirty()) {
+            filePath = obtainFilePath(this.buffers[frameIndex].getBlockId());
+            path = Paths.get(filePath);
+            Files.write(path, this.buffers[frameIndex].getBlockContentArr());
+        }
+
+        this.buffers[frameIndex].setBlockId(-1);
+        this.buffers[frameIndex].setPinned(false);
+        this.buffers[frameIndex].setBlockContentArr(new byte[4000]);
+
+        setIndexOfLastEvictedFrame(frameIndex);
     }
 
     public void GET(int recordNumber) {
