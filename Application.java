@@ -10,14 +10,17 @@ public class Application {
             //Include exit command to escape the program.
             String userInput = sc.nextLine();
             if (userInput.substring(0,4).equalsIgnoreCase("EXIT")) {
+                System.out.println("Program Exited.");
                 break;
             }
             if (userInput.substring(0,3).equalsIgnoreCase("GET")) {
                 bP.GET(Integer.parseInt(userInput.substring(4)));
             }
             if (userInput.substring(0,3).equalsIgnoreCase("SET")) {
-                bP.SET(Integer.parseInt(userInput.substring(4, (userInput.indexOf(" ", userInput.indexOf(" ") + " ".length())))),
-                        userInput.substring(userInput.indexOf(" ", userInput.indexOf(" ") + " ".length() + 2), userInput.length() - 1));
+                bP.SET(Integer.parseInt(userInput.substring(4,
+                                (userInput.indexOf(" ",userInput.indexOf(" ") + " ".length())))),
+                        userInput.substring(userInput.indexOf(" ", userInput.indexOf(" ")
+                                + " ".length() + 2), userInput.length() - 1));
             }
             if (userInput.substring(0,3).equalsIgnoreCase("PIN")) {
                 bP.PIN(Integer.parseInt(userInput.substring(4)));
