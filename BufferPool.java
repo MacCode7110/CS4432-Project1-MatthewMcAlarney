@@ -15,22 +15,51 @@ public class BufferPool {
     }
 
     public String obtainFilePath(int blockId) {
-        if (blockId == 1) {
-            return "Project1/F1.txt";
-        } else if (blockId == 2) {
-            return "Project1/F2.txt";
-        } else if (blockId == 3) {
-            return "Project1/F3.txt";
-        } else if (blockId == 4) {
-            return "Project1/F4.txt";
-        } else if (blockId == 5) {
-            return "Project1/F5.txt";
-        } else if (blockId == 6) {
-            return "Project1/F6.txt";
-        } else if (blockId == 7) {
-            return "Project1/F7.txt";
+        String filePath = "";
+        switch (blockId) {
+            case 1:
+                filePath = "Project1/F1.txt";
+                break;
+            case 2:
+                filePath = "Project1/F2.txt";
+                break;
+            case 3:
+                filePath = "Project1/F3.txt";
+                break;
+            case 4:
+                filePath = "Project1/F4.txt";
+                break;
+            case 5:
+                filePath = "Project1/F5.txt";
+                break;
+            case 6:
+                filePath = "Project1/F6.txt";
+                break;
+            case 7:
+                filePath = "Project1/F7.txt";
+                break;
         }
-        return null;
+        return filePath;
+    }
+
+    public int obtainFileNumber(int recordNumber) {
+        int fileNumber = 0;
+        if (recordNumber >= 0 && recordNumber <= 99) {
+            fileNumber = 1;
+        } else if (recordNumber >= 100 && recordNumber <= 199) {
+            fileNumber = 2;
+        } else if (recordNumber >= 200 && recordNumber <= 299) {
+            fileNumber = 3;
+        } else if (recordNumber >= 300 && recordNumber <= 399) {
+            fileNumber = 4;
+        } else if (recordNumber >= 400 && recordNumber <= 499) {
+            fileNumber = 5;
+        } else if (recordNumber >= 500 && recordNumber <= 599) {
+            fileNumber = 6;
+        } else if (recordNumber >= 600 && recordNumber <= 699) {
+            fileNumber = 7;
+        }
+        return fileNumber;
     }
     public int blockAvailableInPool(int blockId) {
         for (int i = 0; i < buffers.length; i++) {
@@ -98,7 +127,9 @@ public class BufferPool {
     }
 
     public void GET(int recordNumber) {
-        //Need to modify ID sent to helper functions.
+        int blockId = obtainFileNumber(recordNumber);
+        int bufferIndex = blockAvailableInPool(blockId);
+        //Continue here
     }
 
     public void SET(int recordNumber, String content) {
