@@ -138,7 +138,7 @@ public class BufferPool {
 
         if (this.indexOfLastEvictedFrame == this.buffers.length - 1) {
 
-            for (int i = 0; i < this.buffers.length - 1; i++) {
+            for (int i = 0; i < this.buffers.length; i++) {
                 if (!(this.buffers[i].isPinned())) {
                     return i;
                 }
@@ -152,7 +152,7 @@ public class BufferPool {
                 }
             }
 
-            for (int i = 0; i < (this.indexOfLastEvictedFrame + 1); i++) {
+            for (int i = 0; i <= (this.indexOfLastEvictedFrame + 1); i++) {
                 if (!(this.buffers[i].isPinned())) {
                     return i;
                 }
@@ -231,14 +231,14 @@ public class BufferPool {
 
         if (blockAlreadyInMemory) {
             if (blockAlreadyPinned) {
-                System.out.println("File " + blockId + " pinned in Frame " + frameNumber + "; Already Pinned");
+                System.out.println("File " + blockId + " pinned in Frame " + frameNumber + "; Already pinned");
             } else {
-                System.out.println("File " + blockId + " pinned in Frame " + frameNumber + "; Not already Pinned");
+                System.out.println("File " + blockId + " pinned in Frame " + frameNumber + "; Not already pinned");
             }
         } else if (frameEvicted) {
-            System.out.println("File " + blockId + " pinned in Frame " + frameNumber + "; Not already Pinned; " + "Evicted file " + evictedFileNumber + " from Frame " + frameNumber);
+            System.out.println("File " + blockId + " pinned in Frame " + frameNumber + "; Not already pinned; " + "Evicted file " + evictedFileNumber + " from Frame " + frameNumber);
         } else {
-            System.out.println("File " + blockId + " pinned in Frame " + frameNumber + "; Not already Pinned; " + "Brought file " + blockId + " from disk; Placed in Frame " + frameNumber);
+            System.out.println("File " + blockId + " pinned in Frame " + frameNumber + "; Not already pinned; " + "Brought file " + blockId + " from disk; Placed in Frame " + frameNumber);
         }
     }
 
