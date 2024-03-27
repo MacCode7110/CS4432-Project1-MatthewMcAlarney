@@ -1,7 +1,16 @@
 import java.io.IOException;
 import java.util.Scanner;
 
+/**
+ * The driver class of this Java application
+ */
 public class Application {
+
+    /**
+     * Start of the execution of the Java program; parses and handles user input, which includes GET, SET, PIN, and UNPIN commands
+     * @param args the list of command line arguments passed to main
+     * @throws IOException
+     */
     public static void main(String [] args) throws IOException {
         BufferPool bP = new BufferPool();
         bP.initialize(Integer.parseInt(args[0]));
