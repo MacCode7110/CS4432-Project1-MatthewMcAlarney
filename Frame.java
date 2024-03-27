@@ -46,17 +46,17 @@ public class Frame {
         this.blockId = blockId;
     }
 
-    public String getRecord(int recordNumber) {
+    public String getRecord(int modifiedRecordNumber) {
         for (int i = 0; i < this.blockContentArr.length; i++) {
-            if (i == (recordNumber - 1) * 40) {
+            if (i == (modifiedRecordNumber - 1) * 40) {
                 return new String(Arrays.copyOfRange(this.blockContentArr, i, i + 40));
             }
         }
         return null;
     }
 
-    public void updateRecord(int recordNumber, String newContent) {
-        int recordIndex = (recordNumber - 1) * 40;
+    public void updateRecord(int modifiedRecordNumber, String newContent) {
+        int recordIndex = (modifiedRecordNumber - 1) * 40;
         byte[] contentToByteArr = newContent.getBytes();
 
         if (newContent.equals(new String(Arrays.copyOfRange(this.blockContentArr, recordIndex, recordIndex + 40)))) {
@@ -66,7 +66,7 @@ public class Frame {
         }
 
         for (int i = recordIndex; i < recordIndex + 40; i++) {
-            this.blockContentArr[i] = contentToByteArr[i - ((recordNumber - 1) * 40)];
+            this.blockContentArr[i] = contentToByteArr[i - ((modifiedRecordNumber - 1) * 40)];
         }
     }
 }

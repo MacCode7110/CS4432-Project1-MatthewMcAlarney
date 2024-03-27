@@ -1,7 +1,8 @@
+import java.io.IOException;
 import java.util.Scanner;
 
 public class Application {
-    public static void main(String [] args) {
+    public static void main(String [] args) throws IOException {
         BufferPool bP = new BufferPool();
         bP.initialize(Integer.parseInt(args[0]));
         System.out.println("The program is ready for the next command.");
