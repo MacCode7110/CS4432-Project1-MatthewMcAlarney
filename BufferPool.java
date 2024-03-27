@@ -207,7 +207,7 @@ public class BufferPool {
 
     }
 
-    public void printSETResult(int bufferIndex, int modifiedRecordNumber, int blockId, boolean blockAlreadyInMemory, boolean frameEvicted, int evictedFileNumber) {
+    public void printSETResult(int bufferIndex, int blockId, boolean blockAlreadyInMemory, boolean frameEvicted, int evictedFileNumber) {
         int frameNumber = bufferIndex + 1;
 
         if (blockAlreadyInMemory) {
@@ -218,6 +218,47 @@ public class BufferPool {
             System.out.println("Write was successful" + "; " + "Brought file " + blockId + " from disk; Placed in Frame " + frameNumber);
         }
 
+    }
+
+    public void printPINResult(int bufferIndex, int blockId, boolean blockAlreadyInMemory, boolean blockAlreadyPinned, boolean frameEvicted, int evictedFileNumber) {
+        //Pin 5 // Command 3, case 1
+        //Output: File 5 pinned in Frame 1; Not already pinned
+
+        //Pin 5 // Command 3, case 1
+        //Output: File 5 pinned in Frame 1; Already pinned
+
+        //Pin 3 // Command 3, case 2
+        //Output: File 3 pinned in Frame 2; Not already pinned; Evicted file 1 from
+        //Frame 2
+
+        //Pin 2 // Command 3, case 2
+        //Output: File 2 is pinned in Frame 3; Frame 3 was not already pinned;
+        //Evicted file 4 from frame 3
+
+        //Pin 7 // Command 3, case 3
+        //Output: The corresponding block 7 cannot be pinned because the memory
+        //buffers are full
+
+        //Pin 6 // Command 3, case 2
+        //Output: File 6 pinned in Frame 3; Not already pinned; Evicted file 2 from
+        //frame 3
+
+        //Continue here
+    }
+
+    public void printUNPINResult(int bufferIndex, int blockId, boolean blockAlreadyInMemory, boolean frameEvicted, int evictedFileNumber) {
+        //Unpin 3 // Command 4, case 2
+        //Output: The corresponding block 3 cannot be unpinned because it is not in
+        //memory.
+
+        //Unpin 1 // Command 4, case 1
+        //Output: File 1 in frame 3 is unpinned; Frame was already unpinned
+
+        //Unpin 3 // Command 4, case 1
+        //Output: File 3 is unpinned in frame 2; Frame 2 was not already unpinned
+
+        //Unpin 2 // Command 4, case 1
+        //Output: File 2 is unpinned in frame 3; Frame 3 was not already unpinned
     }
 
     public void GET(int rawRecordNumber) throws IOException {
@@ -247,28 +288,61 @@ public class BufferPool {
         if (bufferIndex != -1) { //CASE 1
             this.buffers[bufferIndex].updateRecord(modifiedRecordNumber, newContent);
             this.buffers[bufferIndex].setDirty(true);
-            printSETResult(bufferIndex, modifiedRecordNumber, blockId, true, false, -1);
+            printSETResult(bufferIndex, blockId, true, false, -1);
         } else if (searchForEmptyFrame() != -1) { //CASE 2
             bufferIndex = readBlockFromDisk(blockId);
             this.buffers[bufferIndex].updateRecord(modifiedRecordNumber, newContent);
             this.buffers[bufferIndex].setDirty(true);
-            printSETResult(bufferIndex, modifiedRecordNumber, blockId, false, false, -1);
+            printSETResult(bufferIndex, blockId, false, false, -1);
         } else if (searchForNextFrameToEvict() != -1) { //CASE 3
             evictedFileNumber = evictFrame(searchForNextFrameToEvict());
             bufferIndex = readBlockFromDisk(blockId);
             this.buffers[bufferIndex].updateRecord(modifiedRecordNumber, newContent);
             this.buffers[bufferIndex].setDirty(true);
-            printSETResult(bufferIndex, modifiedRecordNumber, blockId, false, true, evictedFileNumber);
+            printSETResult(bufferIndex, blockId, false, true, evictedFileNumber);
         } else { //CASE 4
             printAccessFailure(blockId, true);
         }
     }
 
-    public void PIN(int blockId) {
+    public void PIN(int blockId) throws IOException {
+        int bufferIndex = blockAvailableInPool(blockId);
+        int evictedFileNumber;
+        boolean blockAlreadyPinned = false;
 
+        if (bufferIndex != -1) { //CASE 1
+            if (this.buffers[bufferIndex].isPinned()) {
+                blockAlreadyPinned = true;
+            } else {
+                this.buffers[bufferIndex].setPinned(true);
+            }
+            printPINResult(bufferIndex, blockId, true, blockAlreadyPinned, false, -1);
+        } else if (searchForEmptyFrame() != -1) { //CASE 2
+            bufferIndex = readBlockFromDisk(blockId);
+            this.buffers[bufferIndex].setPinned(true);
+            printPINResult(bufferIndex, blockId, false, false, false, -1);
+        } else if (searchForNextFrameToEvict() != -1) { //CASE 3
+            evictedFileNumber = evictFrame(searchForNextFrameToEvict());
+            bufferIndex = readBlockFromDisk(blockId);
+            this.buffers[bufferIndex].setPinned(true);
+            printPINResult(bufferIndex, blockId, false, false, true, evictedFileNumber);
+        } else { //CASE 4
+            printAccessFailure(blockId, false);
+        }
     }
 
     public void UNPIN(int blockId) {
+        int bufferIndex = blockAvailableInPool(blockId);
+        int evictedFileNumber;
 
+        if (bufferIndex != -1) { //CASE 1
+
+        } else if (searchForEmptyFrame() != -1) { //CASE 2
+
+        } else if (searchForNextFrameToEvict() != -1) { //CASE 3
+
+        } else { //CASE 4
+            printAccessFailure(blockId, false);
+        }
     }
 }
