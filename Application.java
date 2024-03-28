@@ -29,8 +29,7 @@ public class Application {
             if (userInput.substring(0,3).equalsIgnoreCase("SET")) {
                 bP.SET(Integer.parseInt(userInput.substring(4,
                                 (userInput.indexOf(" ",userInput.indexOf(" ") + " ".length())))),
-                        userInput.substring(userInput.indexOf(" ", userInput.indexOf(" ")
-                                + " ".length() + 2), userInput.length() - 1));
+                        userInput.substring(userInput.indexOf("F"), userInput.length() - 1));
             }
             if (userInput.substring(0,3).equalsIgnoreCase("PIN")) {
                 bP.PIN(Integer.parseInt(userInput.substring(4)));
