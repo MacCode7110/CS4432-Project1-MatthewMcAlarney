@@ -1,5 +1,7 @@
 Matthew McAlarney
+
 Student ID: 893999246
+
 Section 1 - Code Compilation and Execution
     There are two ways that this application can be compiled and run:
         1. Through command line:
@@ -19,7 +21,61 @@ Section 1 - Code Compilation and Execution
             e. Go to Run, and under the dropdown menu, click "Run 'Application'"
             f. A console session titled "Application" will pop up under the "Run" tab in IntelliJ, and the application will output the first message, "The program is ready for the next command."
             g. From here, all commands in the test case file can be entered in the console session in the order that they are presented. For each command that is entered, the application outputs a response message.
+
 Section 2 - Test Results
+
+Below are the results of running the test commands in terminal in the same order that they are presented in the test case file.
+All the test commands pass.
+
+PS C:\Users\17818\cs4432databasesystems2projects\CS4432-Project1-MatthewMcAlarney> javac Application.java
+PS C:\Users\17818\cs4432databasesystems2projects\CS4432-Project1-MatthewMcAlarney> java Application 3
+The program is ready for the next command.
+Set 430 "F05-Rec450, Jane Do, 10 Hill Rd, age020."
+Write was successful; Brought file 5 from disk; Placed in Frame 1
+Get 430
+F05-Rec450, Jane Do, 10 Hill Rd, age020.; File 5 already in memory; Located in Frame 1
+Get 20
+F01-Rec020, Name020, address020, age020.; Brought file 1 from disk; Placed in Frame 2
+Set 430 "F05-Rec450, John Do, 23 Lake Ln, age056."
+Write was successful; File 5 already in memory; Located in Frame 1
+Pin 5
+File 5 pinned in Frame 1; Not already pinned
+Unpin 3
+The corresponding block 3 cannot be unpinned because it is not in memory
+Get 430
+F05-Rec450, John Do, 23 Lake Ln, age056.; File 5 already in memory; Located in Frame 1
+Pin 5
+File 5 pinned in Frame 1; Already pinned
+Get 646
+F07-Rec646, Name646, address646, age646.; Brought file 7 from disk; Placed in Frame 3
+Pin 3
+File 3 pinned in Frame 2; Not already pinned; Evicted file 1 from Frame 2
+Set 10 "F01-Rec010, Tim Boe, 09 Deer Dr, age009."
+Write was successful; Brought file 1 from disk; Placed in Frame 3; Evicted file 7 from Frame 3
+Unpin 1
+File 1 in frame 3 is unpinned; Frame 3 was already unpinned
+Get 355
+F04-Rec355, Name355, address355, age355.; Brought file 4 from disk; Placed in Frame 3; Evicted file 1 from Frame 3
+Pin 2
+File 2 pinned in Frame 3; Not already pinned; Evicted file 4 from Frame 3
+Get 156
+F02-Rec156, Name156, address156, age156.; File 2 already in memory; Located in Frame 3
+Set 10 "F01-Rec010, No Work, 31 Hill St, age100."
+The corresponding block 1 cannot be accessed from disk because the memory buffers are full; Write was unsuccessful
+Pin 7
+The corresponding block 7 cannot be pinned because the memory buffers are full
+Get 10
+The corresponding block 1 cannot be accessed from disk because the memory buffers are full
+Unpin 3
+File 3 is unpinned in frame 2; Frame 2 was not already unpinned
+Unpin 2
+File 2 is unpinned in frame 3; Frame 3 was not already unpinned
+Get 10
+F01-Rec010, Tim Boe, 09 Deer Dr, age009.; Brought file 1 from disk; Placed in Frame 2; Evicted file 3 from Frame 2
+Pin 6
+File 6 pinned in Frame 3; Not already pinned; Evicted file 2 from Frame 3
+Exit
+Program Exited.
 
 Section 3 - Additional Design Decisions
     In the Application class:
